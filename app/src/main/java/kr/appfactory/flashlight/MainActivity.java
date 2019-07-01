@@ -10,12 +10,12 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     static  Camera camera = null;
     private Context mContext=MainActivity.this;
     private static final int REQUEST = 112;
-
 
     private static boolean hasPermissions(Context context, String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
@@ -44,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         camera = Camera.open();
+
+
+        Button onButton = (Button) findViewById(R.id.btn_flash_on);
+        Button offButton = (Button) findViewById(R.id.btn_flash_off);
+
+        offButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -54,16 +60,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View view) {
 
+        Button onButton = (Button) findViewById(R.id.btn_flash_on);
+        Button offButton = (Button) findViewById(R.id.btn_flash_off);
+
             if(view.getId() == R.id.btn_flash_on){
                 Camera.Parameters param = camera.getParameters();
                 param.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 camera.setParameters(param);
                 camera.startPreview();
+
+                onButton.setVisibility(View.INVISIBLE);
+                offButton.setVisibility(View.VISIBLE);
+
             }else if(view.getId() == R.id.btn_flash_off){
                 Camera.Parameters param = camera.getParameters();
                 param.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                 camera.setParameters(param);
                 camera.stopPreview();
+                onButton.setVisibility(View.VISIBLE);
+                offButton.setVisibility(View.INVISIBLE);
             }
     }
 
